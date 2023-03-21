@@ -7,6 +7,7 @@ const client = new Discord.Client();
 
 // Create an empty object to store message counts
 let messageCount: IMessageCount = {};
+let currentMonth = new Date().getMonth();
 
 // Set the role ID for auto-assignment
 const roles = {
@@ -22,21 +23,26 @@ client.on("ready", () => {
 
 // Listen for message events
 client.on("message", (message: IMessage) => {
+  const messageDate = message.createdAt;
+  const isNewMonth = messageDate.getMonth() !== currentMonth;
   // Ignore messages from bots
   if (message.author.bot) return;
 
   // Get the user's ID
   const userId = message.author.id;
 
-  // Increment the user's message count
-  if (!messageCount[userId]) {
-    messageCount[userId] = 1;
+  // Increment the user's message count and update the date if it's a new month or if user does not exist
+  if (isNewMonth || !messageCount[userId]) {
+    messageCount[userId].count = 1;
+    messageCount[userId].date = messageDate;
+    currentMonth = messageDate.getMonth();
   } else {
-    messageCount[userId]++;
+    messageCount[userId].count++;
+    messageCount[userId].date = messageDate;
   }
 
   // Check if the user has sent 30 messages
-  if (messageCount[userId] === 30) {
+  if (messageCount[userId].count === 30) {
     // Get the guild, member and role objects
     const guild = message.guild;
     const member = guild.members.cache.get(userId);
