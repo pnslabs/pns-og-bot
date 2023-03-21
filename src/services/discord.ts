@@ -82,9 +82,11 @@ const initDiscord = () => {
     const joinedAt: Date = member.joinedAt;
     const currentDate = new Date();
     const weeksSinceJoined = weeksBetween(currentDate, joinedAt);
+    const isFollowingPNS = data[userId].isFollowingPNS;
+    const twitterEngagementCount = data[userId].twitterEngagementCount;
 
     /// Check if the user qualifies for Pioneer
-    if (weeksSinceJoined >= 2 && data[userId].count === 30) {
+    if (isFollowingPNS && weeksSinceJoined >= 2 && data[userId].count === 30) {
       const role = guild.roles.cache.find(
         (r: { name: string }) => r.name === variables.pioneerRole
       );
@@ -93,7 +95,12 @@ const initDiscord = () => {
       manageRole(member, roleId, message, userId, "Pioneer");
     }
     /// Check if the user qualifies for Vanguard
-    else if (weeksSinceJoined >= 4 && data[userId].count === 70) {
+    else if (
+      isFollowingPNS &&
+      twitterEngagementCount > 5 &&
+      weeksSinceJoined >= 4 &&
+      data[userId].count === 70
+    ) {
       const role = guild.roles.cache.find(
         (r: { name: string }) => r.name === variables.vanguardRole
       );
@@ -102,7 +109,12 @@ const initDiscord = () => {
       manageRole(member, roleId, message, userId, "Vanguard");
     }
     /// Check if the user qualifies for Luminary
-    else if (weeksSinceJoined >= 8 && data[userId].count === 150) {
+    else if (
+      isFollowingPNS &&
+      twitterEngagementCount > 20 &&
+      weeksSinceJoined >= 8 &&
+      data[userId].count === 150
+    ) {
       const role = guild.roles.cache.find(
         (r: { name: string }) => r.name === variables.luminaryRole
       );
