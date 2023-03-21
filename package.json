@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@types/node": "^18.15.5",
+    "discord.js": "^14.8.0",
     "typescript": "^5.0.2"
   },
   "devDependencies": {
+    "dotenv": "^16.0.3",
     "ts-node": "^10.9.1"
   }
 }
