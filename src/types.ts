@@ -1,8 +1,10 @@
-export type IMessageCount = {
+export type IData = {
   [userId: string]: {
     date: Date;
     count: number;
     twitterUsername: string;
+    twitterUsernameID: string;
+    isFollowingPNS: boolean;
   };
 };
 

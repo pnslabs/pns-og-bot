@@ -15,9 +15,11 @@
     "@discordjs/rest": "^1.6.0",
     "@types/node": "^18.15.5",
     "discord.js": "^14.8.0",
+    "twitter": "^1.7.1",
     "typescript": "^5.0.2"
   },
   "devDependencies": {
+    "@types/twitter": "^1.7.1",
     "dotenv": "^16.0.3",
     "ts-node": "^10.9.1"
   }

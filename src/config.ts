@@ -18,4 +18,9 @@ export const variables = {
   pioneerRole: "PNS Pioneer",
   vanguardRole: "PNS Vanguard",
   luminaryRole: "PNS Luminary",
+  twitterConsumerKey: process.env.TWITTER_CONSUMER_KEY,
+  twitterConsumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+  twitterAccessToken: process.env.TWITTER_ACCESS_TOKEN,
+  twitterAccessTokenSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+  discordBotToken: process.env.DISCORD_BOT_TOKEN,
 };
