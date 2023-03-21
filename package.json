@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "start": "node ./bin/app.js",
+    "start": "yarn build && node ./bin/app.js",
     "dev": "ts-node ./src/app.ts"
   },
   "dependencies": {

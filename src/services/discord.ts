@@ -2,7 +2,7 @@ import { Client } from "discord.js";
 
 import { IntentOptions, roles, variables } from "../config";
 import { data } from "../database";
-import { IData, IMember, IMessage } from "../types";
+import { IMember, IMessage } from "../types";
 import { weeksBetween } from "../utils";
 import { doesUserFollowPNS, getTwitterUserID } from "./twitter";
 
