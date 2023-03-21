@@ -1,0 +1,10 @@
+# Dependency directory
+node_modules
+yarn-error.log
+yarn.lock
+
+# local env variables
+.env
+
+# build direc
+bin

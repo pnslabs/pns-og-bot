@@ -1,0 +1,20 @@
+{
+  "name": "pns-og-bot",
+  "version": "1.0.0",
+  "main": "./src/app.ts",
+  "repository": "https://github.com/pnslabs/pns-og-bot",
+  "author": "Justice Eziefule",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./bin/app.js",
+    "dev": "ts-node ./src/app.ts"
+  },
+  "dependencies": {
+    "@types/node": "^18.15.5",
+    "typescript": "^5.0.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
+}
