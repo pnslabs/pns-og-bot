@@ -11,3 +11,5 @@ export type IMessage = {
   channel: { send: (arg0: string) => void };
   createdAt: Date;
 };
+
+export type IMember = { roles: { add: (arg0: string) => Promise<any> } };

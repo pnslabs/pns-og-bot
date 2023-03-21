@@ -1,5 +1,5 @@
 require("dotenv").config();
-import { IMessage, IMessageCount } from "./types";
+import { IMember, IMessage, IMessageCount } from "./types";
 
 // Import Discord.js library and create a new client
 const Discord = require("discord.js");
@@ -14,6 +14,27 @@ const roles = {
   pioneer: process.env.PNS_PIONEER_ROLE_ID,
   vanguard: process.env.PNS_VANGUARD_ROLE_ID,
   luminary: process.env.PNS_LUMINARY_ROLE_ID,
+};
+
+const manageRole = (
+  member: IMember,
+  roleId: string,
+  message: IMessage,
+  userId: string,
+  role: string
+) => {
+  member.roles
+    .add(roleId)
+    .then(() => {
+      // Send a confirmation message
+      message.channel.send(
+        `Congratulations <@${userId}>, you've been promoted to ${role}!!`
+      );
+    })
+    .catch((err: any) => {
+      console.error(err);
+      message.channel.send("An error occurred while assigning the role.");
+    });
 };
 
 // When the bot is ready, log "Bot is ready!" to the console
@@ -41,29 +62,39 @@ client.on("message", (message: IMessage) => {
     messageCount[userId].date = messageDate;
   }
 
-  // Check if the user has sent 30 messages
+  // Get the guild, member objects
+  const guild = message.guild;
+  const member = guild.members.cache.get(userId);
+
+  // Check if the user qualifies for Pioneer
   if (messageCount[userId].count === 30) {
-    // Get the guild, member and role objects
-    const guild = message.guild;
-    const member = guild.members.cache.get(userId);
+    // get the pioneer role
     const role = guild.roles.cache.find(
       (r: { name: string }) => r.name === "PNS Pioneer"
     );
     const roleId = role ? role.id : roles.pioneer;
 
-    // Add the role to the member
-    member.roles
-      .add(roleId)
-      .then(() => {
-        // Send a confirmation message
-        message.channel.send(
-          `Congratulations <@${userId}>, you've been promoted to Pioneer!!`
-        );
-      })
-      .catch((err: any) => {
-        console.error(err);
-        message.channel.send("An error occurred while assigning the role.");
-      });
+    manageRole(member, roleId, message, userId, "Pioneer");
+  }
+  // Check if the user qualifies for Vanguard
+  else if (messageCount[userId].count === 70) {
+    // get the vanguard role
+    const role = guild.roles.cache.find(
+      (r: { name: string }) => r.name === "PNS Vanguard"
+    );
+    const roleId = role ? role.id : roles.vanguard;
+
+    manageRole(member, roleId, message, userId, "Vanguard");
+  }
+  // Check if the user qualifies for Luminary
+  else if (messageCount[userId].count === 150) {
+    // get the luminary role
+    const role = guild.roles.cache.find(
+      (r: { name: string }) => r.name === "PNS Luminary"
+    );
+    const roleId = role ? role.id : roles.luminary;
+
+    manageRole(member, roleId, message, userId, "Luminary");
   }
 });
 
