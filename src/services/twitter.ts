@@ -2,10 +2,7 @@ require("dotenv").config();
 import Twitter from "twitter";
 import { IData } from "../types";
 
-import { IntentOptions, roles, variables } from "./config";
-import initDiscord from "./services/discord";
-import { IMember, IMessage, IMessageCount } from "./types";
-import { weeksBetween } from "./utils";
+import { variables } from "../config";
 
 const twitterClient = new Twitter({
   consumer_key: variables.twitterConsumerKey!,
@@ -59,7 +56,7 @@ export const doesUserFollowPNS = async (username: string): Promise<boolean> => {
   return isFollowing;
 };
 
-export const streamTwitter = async () => {
+export const initTwitter = async () => {
   /// Listen for a follow events
   const stream = twitterClient.stream("user");
 
@@ -81,9 +78,7 @@ export const streamTwitter = async () => {
       event.event === "retweet" ||
       event.event === "reply"
     ) {
-      console.log(
-        "New " + event.event + " from user" + event.source.screen_name
-      );
+      console.log(`New ${event.event} from user ${event.source.screen_name}`);
 
       for (const key in data) {
         if (data[key].twitterUsernameID === event.source.id_str) {
