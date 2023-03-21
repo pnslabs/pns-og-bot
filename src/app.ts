@@ -1,5 +1,6 @@
 require("dotenv").config();
 import { IMember, IMessage, IMessageCount } from "./types";
+import { weeksBetween } from "./utils";
 
 // Import Discord.js library and create a new client
 const Discord = require("discord.js");
@@ -16,6 +17,7 @@ const roles = {
   luminary: process.env.PNS_LUMINARY_ROLE_ID,
 };
 
+// Function to manage user roles
 const manageRole = (
   member: IMember,
   roleId: string,
@@ -66,8 +68,12 @@ client.on("message", (message: IMessage) => {
   const guild = message.guild;
   const member = guild.members.cache.get(userId);
 
+  const joinedAt: Date = member.joinedAt;
+  const currentDate = new Date();
+  const weeksSinceJoined = weeksBetween(currentDate, joinedAt);
+
   // Check if the user qualifies for Pioneer
-  if (messageCount[userId].count === 30) {
+  if (weeksSinceJoined >= 2 && messageCount[userId].count === 30) {
     // get the pioneer role
     const role = guild.roles.cache.find(
       (r: { name: string }) => r.name === "PNS Pioneer"
@@ -77,7 +83,7 @@ client.on("message", (message: IMessage) => {
     manageRole(member, roleId, message, userId, "Pioneer");
   }
   // Check if the user qualifies for Vanguard
-  else if (messageCount[userId].count === 70) {
+  else if (weeksSinceJoined >= 4 && messageCount[userId].count === 70) {
     // get the vanguard role
     const role = guild.roles.cache.find(
       (r: { name: string }) => r.name === "PNS Vanguard"
@@ -87,7 +93,7 @@ client.on("message", (message: IMessage) => {
     manageRole(member, roleId, message, userId, "Vanguard");
   }
   // Check if the user qualifies for Luminary
-  else if (messageCount[userId].count === 150) {
+  else if (weeksSinceJoined >= 8 && messageCount[userId].count === 150) {
     // get the luminary role
     const role = guild.roles.cache.find(
       (r: { name: string }) => r.name === "PNS Luminary"
