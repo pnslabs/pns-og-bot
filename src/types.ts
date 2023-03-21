@@ -5,6 +5,7 @@ export type IData = {
     twitterUsername: string;
     twitterUsernameID: string;
     isFollowingPNS: boolean;
+    twitterEngagementCount: number;
   };
 };
 

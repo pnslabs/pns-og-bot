@@ -60,17 +60,37 @@ export const doesUserFollowPNS = async (username: string): Promise<boolean> => {
 };
 
 export const streamTwitter = async () => {
-  const PNSID = await getTwitterUserID("pnslabs");
-  /// Listen for a follow event
-  var stream = twitterClient.stream("statuses/filter", { follow: PNSID });
+  /// Listen for a follow events
+  const stream = twitterClient.stream("user");
 
   stream.on("data", function (event) {
+    /// if it is a follow event
     if (event.event === "follow") {
       console.log("New follower: " + event.source.screen_name);
 
       for (const key in data) {
-        if (data[key].twitterUsername === event.source.screen_name) {
+        if (data[key].twitterUsernameID === event.source.id_str) {
           data[key].isFollowingPNS = true;
+          break;
+        }
+      }
+    }
+    /// if it is an engagement event
+    if (
+      event.event === "favorite" ||
+      event.event === "retweet" ||
+      event.event === "reply"
+    ) {
+      console.log(
+        "New " + event.event + " from user" + event.source.screen_name
+      );
+
+      for (const key in data) {
+        if (data[key].twitterUsernameID === event.source.id_str) {
+          data[key].twitterEngagementCount = data[key].twitterEngagementCount
+            ? data[key].twitterEngagementCount++
+            : 1;
+
           break;
         }
       }
@@ -78,6 +98,6 @@ export const streamTwitter = async () => {
   });
 
   stream.on("error", function (error) {
-    console.log(error);
+    console.log(`An error occured ${error}`);
   });
 };
