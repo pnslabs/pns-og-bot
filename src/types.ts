@@ -10,7 +10,7 @@ export type IData = {
 };
 
 export type IMessage = {
-  author: { bot: any; id: any };
+  author: { bot: boolean; id: string };
   guild: any;
   channel: { send: (arg0: string) => void; id: string };
   content: string;

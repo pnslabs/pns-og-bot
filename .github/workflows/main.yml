@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.x"
+
+      - name: Install Dependencies
+        run: |
+          yarn install --frozen-lockfile
+
+      # - name: Run Tests
+      #   run: |
+      #     yarn run test
+
+      - name: Type Check
+        run: |
+          yarn run typecheck
+
+      - name: Build
+        run: |
+          yarn run build
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist

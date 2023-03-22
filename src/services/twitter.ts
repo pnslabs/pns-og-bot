@@ -1,18 +1,14 @@
-require("dotenv").config();
 import Twitter from "twitter";
-import { IData } from "../types";
 
 import { variables } from "../config";
+import { data } from "../database";
 
 const twitterClient = new Twitter({
-  consumer_key: variables.twitterConsumerKey!,
-  consumer_secret: variables.twitterConsumerSecret!,
-  access_token_key: variables.twitterAccessToken!,
-  access_token_secret: variables.twitterAccessTokenSecret!,
+  consumer_key: variables.twitterConsumerKey || "",
+  consumer_secret: variables.twitterConsumerSecret || "",
+  access_token_key: variables.twitterAccessToken || "",
+  access_token_secret: variables.twitterAccessTokenSecret || "",
 });
-
-/// Create an empty object to store data
-let data: IData = {};
 
 export const getTwitterUserID = async (username: string): Promise<string> => {
   let userId = "";
@@ -20,12 +16,12 @@ export const getTwitterUserID = async (username: string): Promise<string> => {
   await twitterClient.get(
     "users/lookup",
     { screen_name: username },
-    function (error, users, response) {
+    function (error, users) {
       if (!error && users.length > 0) {
-        var user_id = users[0].id_str;
+        const user_id = users[0].id_str;
         userId = user_id;
       } else {
-        console.log("Error retrieving user ID: " + error);
+        console.log(`Error retrieving user ID: ${error}`);
       }
     }
   );
@@ -42,7 +38,7 @@ export const doesUserFollowPNS = async (username: string): Promise<boolean> => {
       source_screen_name: "pnslabs",
       target_screen_name: username,
     },
-    function (error, friendship, response) {
+    function (error, friendship) {
       if (!error && friendship.relationship.target.following) {
         console.log("The other user is following you!");
         isFollowing = true;

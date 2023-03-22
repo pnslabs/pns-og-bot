@@ -29,7 +29,7 @@ const initDiscord = () => {
           `Congratulations <@${userId}>, you've been promoted to ${role}!!`
         );
       })
-      .catch((err: any) => {
+      .catch((err) => {
         console.error(err);
         message.channel.send("An error occurred while assigning the role.");
       });

@@ -1,3 +1,3 @@
 import { IData } from "../types";
 
-export let data: IData = {};
+export const data: IData = {};
