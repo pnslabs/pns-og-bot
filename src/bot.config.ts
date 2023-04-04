@@ -23,4 +23,6 @@ export const variables = {
   twitterAccessToken: process.env.TWITTER_ACCESS_TOKEN,
   twitterAccessTokenSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
   discordBotToken: process.env.DISCORD_BOT_TOKEN,
+  dbURL: process.env.POSTGRES_DB_URL as string,
+  dbSecure: process.env.SECURE_DB,
 };

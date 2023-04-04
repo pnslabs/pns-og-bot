@@ -1,7 +1,7 @@
 import Twitter from "twitter";
 
-import { variables } from "../config";
-import { data } from "../database";
+import { variables } from "../bot.config";
+import { data } from "../models";
 
 const twitterClient = new Twitter({
   consumer_key: variables.twitterConsumerKey || "",

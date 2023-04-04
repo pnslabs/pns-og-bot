@@ -1,7 +1,7 @@
 import { Client } from "discord.js";
 
-import { IntentOptions, roles, variables } from "../config";
-import { data } from "../database";
+import { IntentOptions, roles, variables } from "../bot.config";
+import { User } from "../models";
 import { IMember, IMessage } from "../types";
 import { weeksBetween } from "../utils";
 import { doesUserFollowPNS, getTwitterUserID } from "./twitter";
@@ -60,19 +60,19 @@ const initDiscord = () => {
       const twitterUsernameId = await getTwitterUserID(twitterUserName);
       const isFollowingPns = await doesUserFollowPNS(twitterUserName);
 
-      data[userId].twitterUsername = twitterUserName;
-      data[userId].twitterUsernameID = twitterUsernameId;
-      data[userId].isFollowingPNS = isFollowingPns;
+      User[userId].twitterUsername = twitterUserName;
+      User[userId].twitterUsernameID = twitterUsernameId;
+      User[userId].isFollowingPNS = isFollowingPns;
     }
 
     /// Increment the user's message count and update the date if it's a new month or if user does not exist
-    if (isNewMonth || !data[userId]) {
-      data[userId].count = 1;
-      data[userId].date = messageDate;
+    if (isNewMonth || !User[userId]) {
+      User[userId].count = 1;
+      User[userId].date = messageDate;
       currentMonth = messageDate.getMonth();
     } else {
-      data[userId].count++;
-      data[userId].date = messageDate;
+      User[userId].count++;
+      User[userId].date = messageDate;
     }
 
     /// Get the guild, member objects
@@ -82,11 +82,11 @@ const initDiscord = () => {
     const joinedAt: Date = member.joinedAt;
     const currentDate = new Date();
     const weeksSinceJoined = weeksBetween(currentDate, joinedAt);
-    const isFollowingPNS = data[userId].isFollowingPNS;
-    const twitterEngagementCount = data[userId].twitterEngagementCount;
+    const isFollowingPNS = User[userId].isFollowingPNS;
+    const twitterEngagementCount = User[userId].twitterEngagementCount;
 
     /// Check if the user qualifies for Pioneer
-    if (isFollowingPNS && weeksSinceJoined >= 2 && data[userId].count === 30) {
+    if (isFollowingPNS && weeksSinceJoined >= 2 && User[userId].count === 30) {
       const role = guild.roles.cache.find(
         (r: { name: string }) => r.name === variables.pioneerRole
       );
@@ -99,7 +99,7 @@ const initDiscord = () => {
       isFollowingPNS &&
       twitterEngagementCount > 5 &&
       weeksSinceJoined >= 4 &&
-      data[userId].count === 70
+      User[userId].count === 70
     ) {
       const role = guild.roles.cache.find(
         (r: { name: string }) => r.name === variables.vanguardRole
@@ -113,7 +113,7 @@ const initDiscord = () => {
       isFollowingPNS &&
       twitterEngagementCount > 20 &&
       weeksSinceJoined >= 8 &&
-      data[userId].count === 150
+      User[userId].count === 150
     ) {
       const role = guild.roles.cache.find(
         (r: { name: string }) => r.name === variables.luminaryRole
