@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  pns-og-dev-db:
+    image: postgres:latest
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pns-og
+    networks:
+      - pns-og-service
+  test-db:
+    image: postgres:latest
+    ports:
+      - 5435:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pns-og
+    networks:
+      - pns-og-service
+networks:
+  pns-og-service:

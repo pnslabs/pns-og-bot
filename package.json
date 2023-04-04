@@ -17,6 +17,8 @@
     "@discordjs/rest": "^1.6.0",
     "@types/node": "^18.15.5",
     "discord.js": "^14.8.0",
+    "pg": "^8.10.0",
+    "sequelize": "^6.30.0",
     "twitter": "^1.7.1",
     "typescript": "^5.0.2"
   },
