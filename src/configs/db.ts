@@ -4,14 +4,15 @@ import { variables } from "../bot.config";
 const { dbURL, dbSecure } = variables;
 
 export const db: Sequelize = new Sequelize(dbURL, {
-  dialectOptions: dbSecure
-    ? { ssl: { require: true, rejectUnauthorized: false } }
-    : {},
+  // dialectOptions: dbSecure
+  //   ? { ssl: { require: true, rejectUnauthorized: false } }
+  //   : {},
   logging: false,
 });
 
-export const authenticate = ({ clear = false, secure = false }) => {
-  db.authenticate()
+export const authenticate = async ({ clear = false }) => {
+  await db
+    .authenticate()
     .then(async () => {
       console.log("Connection to Database has been established successfully.");
       // eslint-disable-next-line @typescript-eslint/no-var-requires
