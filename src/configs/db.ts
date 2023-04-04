@@ -1,24 +1,24 @@
 import { Sequelize, SequelizeScopeError } from "sequelize";
-import { variables} from "../bot.config";
+import { variables } from "../bot.config";
 
-const {dbURL, dbSecure } = variables;
+const { dbURL, dbSecure } = variables;
 
-export let db: Sequelize = new Sequelize(dbURL, {
+export const db: Sequelize = new Sequelize(dbURL, {
   dialectOptions: dbSecure
     ? { ssl: { require: true, rejectUnauthorized: false } }
     : {},
   logging: false,
 });
 
-
 export const authenticate = ({ clear = false, secure = false }) => {
   db.authenticate()
     .then(async () => {
       console.log("Connection to Database has been established successfully.");
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const models = require("../models");
       const opts = clear ? { force: true } : { alter: true };
-      for (let schema in models) await models[schema].sync(opts);
-    //   if (clear) await seed(models);
+      for (const schema in models) await models[schema].sync(opts);
+      //   if (clear) await seed(models);
       console.log("Migrated");
     })
     .catch((error: SequelizeScopeError) =>

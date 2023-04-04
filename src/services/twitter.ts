@@ -1,7 +1,6 @@
 import Twitter from "twitter";
 
 import { variables } from "../bot.config";
-import { data } from "../models";
 
 const twitterClient = new Twitter({
   consumer_key: variables.twitterConsumerKey || "",
@@ -61,12 +60,12 @@ export const initTwitter = async () => {
     if (event.event === "follow") {
       console.log("New follower: " + event.source.screen_name);
 
-      for (const key in data) {
-        if (data[key].twitterUsernameID === event.source.id_str) {
-          data[key].isFollowingPNS = true;
-          break;
-        }
-      }
+      // for (const key in data) {
+      //   if (data[key].twitterUsernameID === event.source.id_str) {
+      //     data[key].isFollowingPNS = true;
+      //     break;
+      //   }
+      // }
     }
     /// if it is an engagement event
     if (
@@ -76,15 +75,15 @@ export const initTwitter = async () => {
     ) {
       console.log(`New ${event.event} from user ${event.source.screen_name}`);
 
-      for (const key in data) {
-        if (data[key].twitterUsernameID === event.source.id_str) {
-          data[key].twitterEngagementCount = data[key].twitterEngagementCount
-            ? data[key].twitterEngagementCount++
-            : 1;
+      // for (const key in data) {
+      //   if (data[key].twitterUsernameID === event.source.id_str) {
+      //     data[key].twitterEngagementCount = data[key].twitterEngagementCount
+      //       ? data[key].twitterEngagementCount++
+      //       : 1;
 
-          break;
-        }
-      }
+      //     break;
+      //   }
+      // }
     }
   });
 
