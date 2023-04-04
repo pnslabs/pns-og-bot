@@ -59,8 +59,11 @@ const initDiscord = () => {
 
       const twitterUsernameId = await getTwitterUserID(twitterUserName);
       const isFollowingPns = await doesUserFollowPNS(twitterUserName);
+      const user =  await User.findByPk(userId);
 
-      User[userId].twitterUsername = twitterUserName;
+
+      // code failure starts here
+      user.twitterUsername = twitterUserName;
       User[userId].twitterUsernameID = twitterUsernameId;
       User[userId].isFollowingPNS = isFollowingPns;
     }

@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { db } from "../configs/db";
 
-export const Campaign = db.define(
+export const Message = db.define(
   "Message",
   {
     id: { type: DataTypes.UUID, primaryKey: true },
